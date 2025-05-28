@@ -13,13 +13,13 @@ from sanitizr.cleanurl.core.cleaner import URLCleaner
 
 def test_parse_args():
     """Test the argument parser."""
-    with mock.patch('sys.argv', ['cleanurl', '--url', 'https://example.com?utm_source=test']):
+    with mock.patch('sys.argv', ['sanitize', '--url', 'https://example.com?utm_source=test']):
         args = parse_args()
         assert args.url == 'https://example.com?utm_source=test'
         assert not args.verbose
         assert not args.dry_run
 
-    with mock.patch('sys.argv', ['cleanurl', '-v', '-d', '--url', 'https://example.com']):
+    with mock.patch('sys.argv', ['sanitize', '-v', '-d', '--url', 'https://example.com']):
         args = parse_args()
         assert args.url == 'https://example.com'
         assert args.verbose
@@ -89,7 +89,7 @@ https://example.org?fbclid=123
 
 def test_main_with_single_url():
     """Test main function with a single URL."""
-    with mock.patch('sys.argv', ['cleanurl', '--url', 'https://example.com?utm_source=test']):
+    with mock.patch('sys.argv', ['sanitize', '--url', 'https://example.com?utm_source=test']):
         with mock.patch('sys.stdout', new=io.StringIO()) as fake_stdout:
             exit_code = main()
             output = fake_stdout.getvalue()
@@ -101,7 +101,7 @@ def test_main_with_single_url():
 
 def test_main_with_single_url_verbose():
     """Test main function with verbose output."""
-    with mock.patch('sys.argv', ['cleanurl', '--url', 'https://example.com?utm_source=test', '-v']):
+    with mock.patch('sys.argv', ['sanitize', '--url', 'https://example.com?utm_source=test', '-v']):
         with mock.patch('sys.stdout', new=io.StringIO()) as fake_stdout:
             exit_code = main()
             output = fake_stdout.getvalue()
@@ -120,7 +120,7 @@ def test_main_with_input_file(tmp_path):
     # Create a temporary output file path
     output_file = tmp_path / "output.txt"
     
-    with mock.patch('sys.argv', ['cleanurl', '-i', str(input_file), '-o', str(output_file)]):
+    with mock.patch('sys.argv', ['sanitize', '-i', str(input_file), '-o', str(output_file)]):
         exit_code = main()
     
     assert exit_code == 0
@@ -133,7 +133,7 @@ def test_main_with_input_file(tmp_path):
 
 def test_main_with_invalid_config():
     """Test main function with an invalid config file."""
-    with mock.patch('sys.argv', ['cleanurl', '--config', 'nonexistent_config.json', '--url', 'https://example.com']):
+    with mock.patch('sys.argv', ['sanitize', '--config', 'nonexistent_config.json', '--url', 'https://example.com']):
         with mock.patch('sys.stderr', new=io.StringIO()) as fake_stderr:
             exit_code = main()
             error_output = fake_stderr.getvalue()
@@ -144,7 +144,7 @@ def test_main_with_invalid_config():
 
 def test_main_with_invalid_input_file():
     """Test main function with an invalid input file."""
-    with mock.patch('sys.argv', ['cleanurl', '-i', 'nonexistent_file.txt']):
+    with mock.patch('sys.argv', ['sanitize', '-i', 'nonexistent_file.txt']):
         with mock.patch('sys.stderr', new=io.StringIO()) as fake_stderr:
             exit_code = main()
             error_output = fake_stderr.getvalue()
@@ -165,7 +165,7 @@ def test_main_with_output_directory(tmp_path):
     
     # In some environments, opening a directory as a file will fail with a
     # different error. We'll test if any processing happens at all.
-    with mock.patch('sys.argv', ['cleanurl', '-i', str(input_file), '-o', str(output_dir)]):
+    with mock.patch('sys.argv', ['sanitize', '-i', str(input_file), '-o', str(output_dir)]):
         with mock.patch('sys.stderr', new=io.StringIO()) as fake_stderr:
             exit_code = main()
             
@@ -194,7 +194,7 @@ def test_keyboard_interrupt():
             pass
     
     # Set up the test to use stdin so we can simulate the keyboard interrupt
-    with mock.patch('sys.argv', ['cleanurl']):
+    with mock.patch('sys.argv', ['sanitize']):
         with mock.patch('sys.stdin', InterruptingStream()):
             with mock.patch('sys.stderr', new=io.StringIO()) as fake_stderr:
                 exit_code = main()

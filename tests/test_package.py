@@ -44,14 +44,14 @@ def test_cli_entrypoint():
         else:  # Python 3.8, 3.9
             console_scripts = entry_points.get('console_scripts', [])
         
-        # Find the 'cleanurl' entrypoint
-        cleanurl_entry = next((ep for ep in console_scripts if ep.name == 'cleanurl'), None)
+        # Find the 'sanitize' entrypoint
+        sanitize_entry = next((ep for ep in console_scripts if ep.name == 'sanitize'), None)
         
-        # Verify that the 'cleanurl' entrypoint exists
-        assert cleanurl_entry is not None
+        # Verify that the 'sanitize' entrypoint exists
+        assert sanitize_entry is not None
         
         # Verify that the entrypoint points to the correct module/function
-        assert cleanurl_entry.value == 'sanitizr.cleanurl.cli.__main__:main'
+        assert sanitize_entry.value == 'sanitizr.cleanurl.cli.__main__:main'
     except (ImportError, AttributeError):
         pytest.skip("Could not test entrypoints with importlib.metadata")
 

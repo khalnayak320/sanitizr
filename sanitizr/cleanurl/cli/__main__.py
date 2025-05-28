@@ -16,7 +16,7 @@ from ..config.config import ConfigManager
 def parse_args() -> argparse.Namespace:
     """Parse command line arguments."""
     parser = argparse.ArgumentParser(
-        prog="cleanurl",
+        prog="sanitize",
         description="Clean URLs by removing tracking parameters and decoding redirects.",
     )
     
@@ -56,10 +56,12 @@ def parse_args() -> argparse.Namespace:
         help="Clean a single URL directly from the command line."
     )
     
+    # Import at function level to avoid circular imports
+    from .. import __version__
     parser.add_argument(
         "--version",
         action="version",
-        version="%(prog)s 1.0.0",
+        version=f"sanitizr {__version__}",
         help="Show program's version number and exit."
     )
     
