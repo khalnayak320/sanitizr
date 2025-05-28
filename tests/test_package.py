@@ -31,20 +31,29 @@ def test_package_imports():
 def test_cli_entrypoint():
     """Test that the CLI entrypoint is properly registered."""
     # This test verifies that the CLI entrypoint defined in pyproject.toml works
-    import pkg_resources
-    
-    # Get all entrypoints for the 'console_scripts' group
-    entry_points = list(pkg_resources.iter_entry_points(group='console_scripts'))
-    
-    # Find the 'cleanurl' entrypoint
-    cleanurl_entry = next((ep for ep in entry_points if ep.name == 'cleanurl'), None)
-    
-    # Verify that the 'cleanurl' entrypoint exists
-    assert cleanurl_entry is not None
-    
-    # Verify that the entrypoint points to the correct function
-    assert cleanurl_entry.module_name == 'sanitizr.cleanurl.cli.__main__'
-    assert cleanurl_entry.attrs == ['main']
+    try:
+        # Python 3.8+ approach using importlib.metadata
+        import importlib.metadata
+        
+        # Get all entrypoints for the 'console_scripts' group
+        entry_points = importlib.metadata.entry_points()
+        
+        # In Python 3.10+, entry_points() returns a dictionary of SelectableGroups
+        if hasattr(entry_points, 'select'):  # Python 3.10+
+            console_scripts = list(entry_points.select(group='console_scripts'))
+        else:  # Python 3.8, 3.9
+            console_scripts = entry_points.get('console_scripts', [])
+        
+        # Find the 'cleanurl' entrypoint
+        cleanurl_entry = next((ep for ep in console_scripts if ep.name == 'cleanurl'), None)
+        
+        # Verify that the 'cleanurl' entrypoint exists
+        assert cleanurl_entry is not None
+        
+        # Verify that the entrypoint points to the correct module/function
+        assert cleanurl_entry.value == 'sanitizr.cleanurl.cli.__main__:main'
+    except (ImportError, AttributeError):
+        pytest.skip("Could not test entrypoints with importlib.metadata")
 
 
 def test_version_consistency():

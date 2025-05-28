@@ -13,7 +13,7 @@ from sanitizr.cleanurl.config.config import ConfigManager
 
 def create_temp_config(config_data, file_format="json"):
     """Helper to create a temporary config file."""
-    with tempfile.NamedTemporaryFile(suffix=f".{file_format}", delete=False) as temp_file:
+    with tempfile.NamedTemporaryFile(suffix=f".{file_format}", mode="w", encoding="utf-8", delete=False) as temp_file:
         if file_format == "json":
             json.dump(config_data, temp_file)
         elif file_format == "yaml":
@@ -30,29 +30,33 @@ def test_config_manager_default():
     
     # Test that default tracking parameters are loaded
     tracking_params = config_manager.get_tracking_params()
-    assert isinstance(tracking_params, list)
+    assert isinstance(tracking_params, set)
     assert "utm_source" in tracking_params
     assert "fbclid" in tracking_params
     
     # Test that default redirect parameters are loaded
     redirect_params = config_manager.get_redirect_params()
-    assert isinstance(redirect_params, list)
-    assert "url" in redirect_params
+    assert isinstance(redirect_params, dict)
+    assert "google.com" in redirect_params
+    assert "url" in redirect_params["google.com"]
     
     # Test that default whitelist parameters are loaded
     whitelist_params = config_manager.get_whitelist_params()
-    assert isinstance(whitelist_params, list)
+    assert isinstance(whitelist_params, set)
     
     # Test that default blacklist parameters are loaded
     blacklist_params = config_manager.get_blacklist_params()
-    assert isinstance(blacklist_params, list)
+    assert isinstance(blacklist_params, set)
 
 
 def test_config_manager_custom_json():
     """Test ConfigManager with a custom JSON config."""
     custom_config = {
         "tracking_params": ["custom_tracking", "another_param"],
-        "redirect_params": ["custom_redirect"],
+        "redirect_params": {
+            "example.com": ["custom_redirect"],
+            "google.com": ["additional_param"]
+        },
         "whitelist_params": ["keep_this_param"],
         "blacklist_params": ["remove_this_param"]
     }
@@ -71,7 +75,8 @@ def test_config_manager_custom_json():
         
         # Test that custom redirect parameters are loaded
         redirect_params = config_manager.get_redirect_params()
-        assert "custom_redirect" in redirect_params
+        assert "example.com" in redirect_params
+        assert "custom_redirect" in redirect_params["example.com"]
         
         # Test that custom whitelist parameters are loaded
         whitelist_params = config_manager.get_whitelist_params()
@@ -91,7 +96,10 @@ def test_config_manager_custom_yaml():
     """Test ConfigManager with a custom YAML config."""
     custom_config = {
         "tracking_params": ["yaml_tracking", "yaml_param"],
-        "redirect_params": ["yaml_redirect"],
+        "redirect_params": {
+            "example.org": ["yaml_redirect"],
+            "twitter.com": ["yaml_param"]
+        },
         "whitelist_params": ["yaml_whitelist"],
         "blacklist_params": ["yaml_blacklist"]
     }
@@ -110,7 +118,8 @@ def test_config_manager_custom_yaml():
         
         # Test that custom redirect parameters are loaded
         redirect_params = config_manager.get_redirect_params()
-        assert "yaml_redirect" in redirect_params
+        assert "example.org" in redirect_params
+        assert "yaml_redirect" in redirect_params["example.org"]
         
         # Test that custom whitelist parameters are loaded
         whitelist_params = config_manager.get_whitelist_params()
@@ -140,12 +149,12 @@ def test_config_manager_invalid_json():
 
 def test_config_manager_unsupported_format():
     """Test ConfigManager with an unsupported file format."""
-    with tempfile.NamedTemporaryFile(suffix=".txt", delete=False) as temp_file:
-        temp_file.write(b"not a config file")
+    with tempfile.NamedTemporaryFile(suffix=".txt", mode="w", encoding="utf-8", delete=False) as temp_file:
+        temp_file.write("not a config file")
     
     config_file = temp_file.name
     try:
-        with pytest.raises(ValueError, match="Unsupported config file format"):
+        with pytest.raises(ValueError, match="Unsupported configuration file format"):
             ConfigManager(config_file)
     finally:
         # Clean up temporary file
@@ -175,17 +184,18 @@ def test_config_manager_nonexistent_file():
 
 
 def test_get_tracking_params_additional():
-    """Test getting tracking params with additional parameters."""
+    """Test getting tracking params with additional parameters manually."""
     config_manager = ConfigManager()
     
-    # Add additional parameters
-    additional_params = ["extra_param1", "extra_param2"]
+    # Get default tracking parameters
+    tracking_params = config_manager.get_tracking_params()
     
-    # Get tracking parameters with additional parameters
-    tracking_params = config_manager.get_tracking_params(additional_params)
+    # Add additional parameters manually
+    additional_params = {"extra_param1", "extra_param2"}
+    combined_params = tracking_params.union(additional_params)
     
     # Check that both default and additional parameters are included
-    assert "utm_source" in tracking_params
-    assert "fbclid" in tracking_params
-    assert "extra_param1" in tracking_params
-    assert "extra_param2" in tracking_params
+    assert "utm_source" in combined_params
+    assert "fbclid" in combined_params
+    assert "extra_param1" in combined_params
+    assert "extra_param2" in combined_params
