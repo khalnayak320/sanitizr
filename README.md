@@ -3,7 +3,7 @@
 [![Python Tests](https://github.com/Jordonh18/sanitizr/actions/workflows/python-tests.yml/badge.svg)](https://github.com/Jordonh18/sanitizr/actions/workflows/python-tests.yml)
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL%203.0-blue.svg)](https://opensource.org/licenses/GPL-3.0)
 
-A powerful and modular URL cleaning library and CLI tool that removes tracking parameters and decodes redirects. **Currently in early development.**
+A powerful and modular URL cleaning library and CLI tool that removes tracking parameters and decodes redirects.
 
 ## Features
 
@@ -16,12 +16,10 @@ A powerful and modular URL cleaning library and CLI tool that removes tracking p
 
 ## Installation
 
-**Note:** Sanitizr is currently in early development and not yet available via pip. You can install it directly from the repository:
+You can install Sanitizr from PyPI:
 
 ```bash
-git clone https://github.com/Jordonh18/sanitizr.git
-cd sanitizr
-pip install -e .
+pip install sanitizr
 ```
 
 For development setup:
