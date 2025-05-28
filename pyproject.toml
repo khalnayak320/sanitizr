@@ -47,9 +47,9 @@ docs = [
 ]
 
 [project.urls]
-"Homepage" = "https:#github.com/Jordonh18/sanitizr"
-"Bug Tracker" = "https:#github.com/Jordonh18/sanitizr/issues"
-"Documentation" = "https:#jordonh18.github.io/sanitizr"
+"Homepage" = "https://github.com/Jordonh18/sanitizr"
+"Bug Tracker" = "https://github.com/Jordonh18/sanitizr/issues"
+"Documentation" = "https://jordonh18.github.io/sanitizr"
 
 [project.scripts]
 cleanurl = "sanitizr.cleanurl.cli.__main__:main"
