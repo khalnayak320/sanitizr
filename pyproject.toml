@@ -8,7 +8,7 @@ name = "sanitizr"
 version = "0.1.0"
 description = "Clean URLs by removing tracking parameters and decoding redirects"
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 license = {text = "GPL-3.0-or-later"}
 authors = [
     {name = "Sanitizr Contributors"}
@@ -18,7 +18,6 @@ classifiers = [
     "Intended Audience :: Developers",
     "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
@@ -38,6 +37,7 @@ dev = [
     "isort>=5.12",
     "flake8>=6.0",
     "mypy>=1.0",
+    "pyyaml>=6.0",
 ]
 docs = [
     "mkdocs>=1.4",
@@ -56,18 +56,18 @@ cleanurl = "sanitizr.cleanurl.cli.__main__:main"
 
 [tool.setuptools]
 packages = ["sanitizr", "sanitizr.cleanurl", "sanitizr.cleanurl.core", "sanitizr.cleanurl.cli", "sanitizr.cleanurl.config"]
-package_data = {sanitizr = {cleanurl = ["data/*.json"]}}
+include-package-data = true
 
 [tool.black]
 line-length = 100
-target-version = ["py37"]
+target-version = ["py38"]
 
 [tool.isort]
 profile = "black"
 line_length = 100
 
 [tool.mypy]
-python_version = "3.7"
+python_version = "3.8"
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true
@@ -76,3 +76,4 @@ disallow_incomplete_defs = true
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = "test_*.py"
+addopts = "-v"
