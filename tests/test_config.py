@@ -8,7 +8,7 @@ import pytest
 from unittest import mock
 import tempfile
 
-from sanitizr.sanitize.config.config import ConfigManager
+from sanitizr.sanitizr.config.config import ConfigManager
 
 
 def create_temp_config(config_data, file_format="json"):
@@ -90,7 +90,7 @@ def test_config_manager_custom_json():
         os.unlink(config_file)
 
 
-@pytest.mark.skipif(not sys.modules['sanitizr.sanitize.config.config'].YAML_AVAILABLE, 
+@pytest.mark.skipif(not sys.modules['sanitizr.sanitizr.config.config'].YAML_AVAILABLE, 
                 reason="PyYAML not installed")
 def test_config_manager_custom_yaml():
     """Test ConfigManager with a custom YAML config."""
@@ -161,7 +161,7 @@ def test_config_manager_unsupported_format():
         os.unlink(config_file)
 
 
-@pytest.mark.skipif(sys.modules['sanitizr.sanitize.config.config'].YAML_AVAILABLE, 
+@pytest.mark.skipif(sys.modules['sanitizr.sanitizr.config.config'].YAML_AVAILABLE, 
                 reason="PyYAML is installed")
 def test_yaml_not_installed():
     """Test handling when PyYAML is not installed."""

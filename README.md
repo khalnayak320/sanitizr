@@ -37,22 +37,22 @@ pip install -e ".[dev]"
 
 ```bash
 # Clean a single URL
-sanitize -u "https://example.com?id=123&utm_source=newsletter"
+sanitizr -u "https://example.com?id=123&utm_source=newsletter"
 
 # Clean URLs from a file
-sanitize -i urls.txt -o cleaned_urls.txt
+sanitizr -i urls.txt -o cleaned_urls.txt
 
 # Clean URLs from stdin
-cat urls.txt | sanitize > cleaned_urls.txt
+cat urls.txt | sanitizr > cleaned_urls.txt
 
 # Use verbose output to see the changes
-sanitize -u "https://example.com?id=123&utm_source=newsletter" -v
+sanitizr -u "https://example.com?id=123&utm_source=newsletter" -v
 ```
 
 ### Python API
 
 ```python
-from sanitizr.sanitize import URLCleaner
+from sanitizr.sanitizr import URLCleaner
 
 cleaner = URLCleaner()
 clean_url = cleaner.clean_url("https://example.com?id=123&utm_source=newsletter")
@@ -81,7 +81,7 @@ blacklist_params:
 Use the configuration with the `--config` option:
 
 ```bash
-sanitize -u "https://example.com?id=123&custom_tracker=abc" --config config.yaml
+sanitizr -u "https://example.com?id=123&custom_tracker=abc" --config config.yaml
 ```
 
 ## License

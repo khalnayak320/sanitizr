@@ -16,7 +16,7 @@ from ..config.config import ConfigManager
 def parse_args() -> argparse.Namespace:
     """Parse command line arguments."""
     parser = argparse.ArgumentParser(
-        prog="sanitize",
+        prog="sanitizr",
         description="Clean URLs by removing tracking parameters and decoding redirects.",
     )
     

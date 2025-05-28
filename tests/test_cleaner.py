@@ -3,7 +3,7 @@ Unit tests for the Sanitizr URL cleaner.
 """
 
 import unittest
-from sanitizr.sanitize.core.cleaner import URLCleaner
+from sanitizr.sanitizr.core.cleaner import URLCleaner
 
 
 class TestURLCleaner(unittest.TestCase):
