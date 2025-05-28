@@ -7,8 +7,8 @@ import sys
 from unittest import mock
 import pytest
 
-from sanitizr.cleanurl.cli.__main__ import main, process_urls, parse_args
-from sanitizr.cleanurl.core.cleaner import URLCleaner
+from sanitizr.sanitize.cli.__main__ import main, process_urls, parse_args
+from sanitizr.sanitize.core.cleaner import URLCleaner
 
 
 def test_parse_args():

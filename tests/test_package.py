@@ -11,20 +11,20 @@ def test_package_imports():
     assert hasattr(sanitizr, "__version__")
     
     # Check that the main modules can be imported
-    from sanitizr import cleanurl
-    assert cleanurl is not None
+    from sanitizr import sanitize
+    assert sanitize is not None
     
     # Check that submodules can be imported
-    from sanitizr.cleanurl import core, config, cli
+    from sanitizr.sanitize import core, config, cli
     assert core is not None
     assert config is not None
     assert cli is not None
     
     # Check specific components
-    from sanitizr.cleanurl.core import cleaner
+    from sanitizr.sanitize.core import cleaner
     assert hasattr(cleaner, "URLCleaner")
     
-    from sanitizr.cleanurl.config import config
+    from sanitizr.sanitize.config import config
     assert hasattr(config, "ConfigManager")
 
 
@@ -51,7 +51,7 @@ def test_cli_entrypoint():
         assert sanitize_entry is not None
         
         # Verify that the entrypoint points to the correct module/function
-        assert sanitize_entry.value == 'sanitizr.cleanurl.cli.__main__:main'
+        assert sanitize_entry.value == 'sanitizr.sanitize.cli.__main__:main'
     except (ImportError, AttributeError):
         pytest.skip("Could not test entrypoints with importlib.metadata")
 

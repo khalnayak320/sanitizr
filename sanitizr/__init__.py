@@ -12,6 +12,6 @@ except importlib.metadata.PackageNotFoundError:
     __version__ = "1.0.0"
 
 # Import from subpackage for easier access
-from sanitizr.cleanurl import URLCleaner, ConfigManager
+from sanitizr.sanitize import URLCleaner, ConfigManager
 
 __all__ = ["URLCleaner", "ConfigManager"]

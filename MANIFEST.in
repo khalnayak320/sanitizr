@@ -6,7 +6,7 @@ include pyproject.toml
 include setup.py
 
 # Include data files
-include sanitizr/cleanurl/data/*.json
+include sanitizr/sanitize/data/*.json
 
 # Include tests but not in the actual package
 recursive-include tests *.py

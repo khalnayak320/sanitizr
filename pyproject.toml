@@ -52,10 +52,10 @@ docs = [
 "Documentation" = "https://jordonh18.github.io/sanitizr"
 
 [project.scripts]
-sanitize = "sanitizr.cleanurl.cli.__main__:main"
+sanitize = "sanitizr.sanitize.cli.__main__:main"
 
 [tool.setuptools]
-packages = ["sanitizr", "sanitizr.cleanurl", "sanitizr.cleanurl.core", "sanitizr.cleanurl.cli", "sanitizr.cleanurl.config"]
+packages = ["sanitizr", "sanitizr.sanitize", "sanitizr.sanitize.core", "sanitizr.sanitize.cli", "sanitizr.sanitize.config"]
 include-package-data = true
 
 [tool.black]

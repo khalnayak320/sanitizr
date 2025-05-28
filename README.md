@@ -2,6 +2,11 @@
 
 [![Python Tests](https://github.com/Jordonh18/sanitizr/actions/workflows/python-tests.yml/badge.svg)](https://github.com/Jordonh18/sanitizr/actions/workflows/python-tests.yml)
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL%203.0-blue.svg)](https://opensource.org/licenses/GPL-3.0)
+[![codecov](https://codecov.io/gh/Jordonh18/sanitizr/branch/main/graph/badge.svg)](https://codecov.io/gh/Jordonh18/sanitizr)
+[![Python Versions](https://img.shields.io/pypi/pyversions/sanitizr.svg)](https://pypi.org/project/sanitizr/)
+![GitHub last commit](https://img.shields.io/github/last-commit/Jordonh18/sanitizr)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 
 A powerful and modular URL cleaning library and CLI tool that removes tracking parameters and decodes redirects.
 
@@ -49,7 +54,7 @@ sanitize -u "https://example.com?id=123&utm_source=newsletter" -v
 ### Python API
 
 ```python
-from sanitizr.cleanurl import URLCleaner
+from sanitizr.sanitize import URLCleaner
 
 cleaner = URLCleaner()
 clean_url = cleaner.clean_url("https://example.com?id=123&utm_source=newsletter")
