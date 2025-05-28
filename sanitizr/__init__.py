@@ -9,7 +9,7 @@ import importlib.metadata
 try:
     __version__ = importlib.metadata.version("sanitizr")
 except importlib.metadata.PackageNotFoundError:
-    __version__ = "1.0.0"
+    __version__ = "1.0.1"
 
 # Import from subpackage for easier access
 from sanitizr.sanitizr import URLCleaner, ConfigManager

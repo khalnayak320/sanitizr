@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sanitizr"
-version = "1.0.0"
+version = "1.0.1"
 description = "Clean URLs by removing tracking parameters and decoding redirects"
 readme = "README.md"
 requires-python = ">=3.8"
