@@ -56,7 +56,7 @@ cleanurl = "sanitizr.cleanurl.cli.__main__:main"
 
 [tool.setuptools]
 packages = ["sanitizr", "sanitizr.cleanurl", "sanitizr.cleanurl.core", "sanitizr.cleanurl.cli", "sanitizr.cleanurl.config"]
-package_data = {"sanitizr.cleanurl": ["data/*.json"]}
+package_data = {sanitizr = {cleanurl = ["data/*.json"]}}
 
 [tool.black]
 line-length = 100
