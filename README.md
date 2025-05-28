@@ -2,11 +2,9 @@
 
 [![Python Tests](https://github.com/Jordonh18/sanitizr/actions/workflows/python-tests.yml/badge.svg)](https://github.com/Jordonh18/sanitizr/actions/workflows/python-tests.yml)
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL%203.0-blue.svg)](https://opensource.org/licenses/GPL-3.0)
-[![codecov](https://codecov.io/gh/Jordonh18/sanitizr/branch/main/graph/badge.svg)](https://codecov.io/gh/Jordonh18/sanitizr)
-[![Python Versions](https://img.shields.io/pypi/pyversions/sanitizr.svg)](https://pypi.org/project/sanitizr/)
+[![PyPI](https://img.shields.io/pypi/v/sanitizr.svg)](https://pypi.org/project/sanitizr/)
+[![cover](https://codecov.io/gh/Jordonh18/sanitizr/branch/main/graph/badge.svg)](https://codecov.io/gh/Jordonh18/sanitizr)
 ![GitHub last commit](https://img.shields.io/github/last-commit/Jordonh18/sanitizr)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-
 
 A powerful and modular URL cleaning library and CLI tool that removes tracking parameters and decodes redirects.
 
@@ -39,22 +37,22 @@ pip install -e ".[dev]"
 
 ```bash
 # Clean a single URL
-sanitize -u "https://example.com?id=123&utm_source=newsletter"
+sanitizr -u "https://example.com?id=123&utm_source=newsletter"
 
 # Clean URLs from a file
-sanitize -i urls.txt -o cleaned_urls.txt
+sanitizr -i urls.txt -o cleaned_urls.txt
 
 # Clean URLs from stdin
-cat urls.txt | sanitize > cleaned_urls.txt
+cat urls.txt | sanitizr > cleaned_urls.txt
 
 # Use verbose output to see the changes
-sanitize -u "https://example.com?id=123&utm_source=newsletter" -v
+sanitizr -u "https://example.com?id=123&utm_source=newsletter" -v
 ```
 
 ### Python API
 
 ```python
-from sanitizr.sanitize import URLCleaner
+from sanitizr.sanitizr import URLCleaner
 
 cleaner = URLCleaner()
 clean_url = cleaner.clean_url("https://example.com?id=123&utm_source=newsletter")
@@ -83,7 +81,7 @@ blacklist_params:
 Use the configuration with the `--config` option:
 
 ```bash
-sanitize -u "https://example.com?id=123&custom_tracker=abc" --config config.yaml
+sanitizr -u "https://example.com?id=123&custom_tracker=abc" --config config.yaml
 ```
 
 ## License

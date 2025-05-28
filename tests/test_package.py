@@ -11,20 +11,20 @@ def test_package_imports():
     assert hasattr(sanitizr, "__version__")
     
     # Check that the main modules can be imported
-    from sanitizr import sanitize
-    assert sanitize is not None
+    from sanitizr import sanitizr
+    assert sanitizr is not None
     
     # Check that submodules can be imported
-    from sanitizr.sanitize import core, config, cli
+    from sanitizr.sanitizr import core, config, cli
     assert core is not None
     assert config is not None
     assert cli is not None
     
     # Check specific components
-    from sanitizr.sanitize.core import cleaner
+    from sanitizr.sanitizr.core import cleaner
     assert hasattr(cleaner, "URLCleaner")
     
-    from sanitizr.sanitize.config import config
+    from sanitizr.sanitizr.config import config
     assert hasattr(config, "ConfigManager")
 
 
@@ -44,14 +44,14 @@ def test_cli_entrypoint():
         else:  # Python 3.8, 3.9
             console_scripts = entry_points.get('console_scripts', [])
         
-        # Find the 'sanitize' entrypoint
-        sanitize_entry = next((ep for ep in console_scripts if ep.name == 'sanitize'), None)
+        # Find the 'sanitizr' entrypoint
+        sanitizr_entry = next((ep for ep in console_scripts if ep.name == 'sanitizr'), None)
         
-        # Verify that the 'sanitize' entrypoint exists
-        assert sanitize_entry is not None
+        # Verify that the 'sanitizr' entrypoint exists
+        assert sanitizr_entry is not None
         
         # Verify that the entrypoint points to the correct module/function
-        assert sanitize_entry.value == 'sanitizr.sanitize.cli.__main__:main'
+        assert sanitizr_entry.value == 'sanitizr.sanitizr.cli.__main__:main'
     except (ImportError, AttributeError):
         pytest.skip("Could not test entrypoints with importlib.metadata")
 

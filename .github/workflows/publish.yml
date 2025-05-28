@@ -1,34 +1,121 @@
 name: Publish to PyPI
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
     inputs:
-      version:
-        description: 'Version to publish (e.g., v1.2.3)'
+      release_type:
+        description: 'Release type (production or test)'
         required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - test
 
 jobs:
   build-and-publish:
-    name: Build and Publish to PyPI
+    name: Build, Release, and Publish to PyPI
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.x'
 
-      - name: Install build tools
-        run: python -m pip install --upgrade build twine
+      - name: Set release type
+        id: set_release_type
+        run: |
+          if [[ "${{ github.event_name }}" == "push" ]]; then
+            echo "RELEASE_TYPE=production" >> $GITHUB_ENV
+          else
+            echo "RELEASE_TYPE=${{ inputs.release_type }}" >> $GITHUB_ENV
+          fi
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --upgrade build twine wheel setuptools
+
+      - name: Extract version
+        id: get_version
+        run: |
+          VERSION=$(grep -Po '(?<=version = ")[^"]*' pyproject.toml)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Detected version: $VERSION"
 
       - name: Build the package
         run: python -m build
+      
+      - name: Run tests
+        run: |
+          python -m pip install -e ".[dev]"
+          python -m pytest
+
+      - name: Create Release Notes
+        id: release_notes
+        run: |
+          echo "Generating release notes for version ${{ env.VERSION }}"
+          # Generate release notes based on git commits since last tag
+          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          if [ -z "$LAST_TAG" ]; then
+            CHANGELOG=$(git log --pretty=format:"* %s (%h)" --reverse)
+          else
+            CHANGELOG=$(git log ${LAST_TAG}..HEAD --pretty=format:"* %s (%h)" --reverse)
+          fi
+          
+          # If there are no changes, add a default message
+          if [ -z "$CHANGELOG" ]; then
+            CHANGELOG="* Bug fixes and improvements"
+          fi
+          
+          # Save release notes to file
+          echo "# Sanitizr ${{ env.VERSION }}" > release_notes.md
+          echo "" >> release_notes.md
+          echo "## What's Changed" >> release_notes.md
+          echo "$CHANGELOG" >> release_notes.md
+          echo "" >> release_notes.md
+          echo "**Full Changelog**: https://github.com/Jordonh18/sanitizr/commits/v${{ env.VERSION }}" >> release_notes.md
+          
+          cat release_notes.md
+          
+          # Set multiline output for GitHub Actions
+          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+          echo "notes<<$EOF" >> $GITHUB_OUTPUT
+          cat release_notes.md >> $GITHUB_OUTPUT
+          echo "$EOF" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Sanitizr v${{ env.VERSION }}
+          tag_name: v${{ env.VERSION }}
+          body: ${{ steps.release_notes.outputs.notes }}
+          files: dist/*
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish to PyPI
+        if: ${{ env.RELEASE_TYPE == 'production' }}
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
         run: python -m twine upload dist/*
+        
+      - name: Publish to TestPyPI
+        if: ${{ env.RELEASE_TYPE == 'test' }}
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.TEST_PYPI_API_TOKEN }}
+        run: python -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*

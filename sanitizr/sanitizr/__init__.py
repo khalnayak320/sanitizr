@@ -13,7 +13,7 @@ import importlib.metadata
 try:
     __version__ = importlib.metadata.version("sanitizr")
 except importlib.metadata.PackageNotFoundError:
-    __version__ = "1.0.0"
+    __version__ = "1.0.1"
 
 # Import core components for easier access
 from .core.cleaner import URLCleaner

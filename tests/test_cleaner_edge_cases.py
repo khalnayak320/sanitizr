@@ -4,7 +4,7 @@ Additional tests for the Sanitizr URL cleaner module focusing on edge cases.
 import pytest
 from urllib.parse import urlparse, parse_qs
 
-from sanitizr.sanitize.core.cleaner import URLCleaner
+from sanitizr.sanitizr.core.cleaner import URLCleaner
 
 
 def test_empty_url():
