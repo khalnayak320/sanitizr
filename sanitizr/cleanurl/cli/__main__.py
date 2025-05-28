@@ -56,6 +56,13 @@ def parse_args() -> argparse.Namespace:
         help="Clean a single URL directly from the command line."
     )
     
+    parser.add_argument(
+        "--version",
+        action="version",
+        version="%(prog)s 1.0.0",
+        help="Show program's version number and exit."
+    )
+    
     return parser.parse_args()
 
 
