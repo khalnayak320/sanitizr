@@ -50,8 +50,9 @@ jobs:
         run: |
           VERSION=$(grep -Po '(?<=version = ")[^"]*' pyproject.toml)
           echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
           echo "Detected version: $VERSION"
+        shell: bash
 
       - name: Build the package
         run: python -m build
